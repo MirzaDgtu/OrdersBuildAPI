@@ -44,3 +44,38 @@ func hashPassword(s *string) error {
 	*s = string(hashedBytes[:])
 	return nil
 }
+
+func checkPassword(existingHash, incomingPass string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(existingHash), []byte(incomingPass)) == nil
+}
+
+func (db *DBORM) SignInUser(email, pass string) (user model.User, err error) {
+	result := db.Table("users").Where(&model.User{Email: email})
+	err = result.First(&user).Error
+	if err != nil {
+		return user, err
+	}
+
+	if !checkPassword(user.Pass, pass) {
+		return user, ErrINVALIDPASSWORD
+	}
+
+	user.Pass = ""
+
+	err = result.Update("loggedin", 1).Error
+	if err != nil {
+		return user, err
+	}
+
+	return user, result.Find(&user).Error
+}
+
+func (db *DBORM) SignOutUserById(id int) error {
+	user := model.User{
+		Model: gorm.Model{
+			ID: uint(id),
+		},
+	}
+
+	return db.Table("users").Where(&user).Update("loggedin", 0).Error
+}

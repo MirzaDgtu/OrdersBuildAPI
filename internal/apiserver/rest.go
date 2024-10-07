@@ -19,16 +19,15 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 	r := gin.Default()
 	r.Use(MyCustomLogger())
 
-	/*
-		userGroup := r.Group("/user")
-		{
-			userGroup.POST("/:id/signout", h.SignOut)
-			userGroup.GET("/:id/orders", h.GetOrders)
-		}
-	*/
+	userGroup := r.Group("/user")
+	{
+		userGroup.POST("/:id/signout", h.SignOutUserById)
+		//userGroup.GET("/:id/orders", h.GetOrders)
+	}
+
 	usersGroup := r.Group("/users")
 	{
-		//	usersGroup.POST("/signin", h.SignIn)
+		usersGroup.POST("/signin", h.SignIn)
 		usersGroup.POST("", h.AddUser)
 	}
 	//r.Use(static.ServeRoot("/", "../public/build"))
