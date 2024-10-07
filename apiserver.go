@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"ordersbuild/internal/apiserver"
+)
 
 func main() {
-	fmt.Println("Run API Server")
+	log.Println("Main log....")
+	log.Fatal(apiserver.RunAPI("127.0.0.1:8090"))
 }
