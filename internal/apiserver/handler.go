@@ -87,6 +87,7 @@ func (h *Handler) SignOutUserById(ctx *gin.Context) {
 	id, err := strconv.Atoi(p)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	err = h.db.SignOutUserById(id)

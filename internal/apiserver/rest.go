@@ -2,6 +2,7 @@ package apiserver
 
 import (
 	"fmt"
+	"ordersbuild/dblayer"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,10 +12,15 @@ func RunAPI(address string) error {
 	if err != nil {
 		return err
 	}
-	return RunAPIWithHandler(address, h)
+
+	o, errO := dblayer.New()
+	if errO != nil {
+		return errO
+	}
+	return RunAPIWithHandler(address, h, o)
 }
 
-func RunAPIWithHandler(address string, h HandlerInterface) error {
+func RunAPIWithHandler(address string, h HandlerInterface, o OrdersInterface) error {
 	//Get gin's default engine
 	r := gin.Default()
 	r.Use(MyCustomLogger())
@@ -30,6 +36,19 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 		usersGroup.POST("/signin", h.SignIn)
 		usersGroup.POST("", h.AddUser)
 	}
+
+	orderGroup := r.Group("/order", o.GetOrderByUID)
+	{
+		orderGroup.GET("/:id")
+		orderGroup.POST("/:id/:done", o.GetOrderByUID)
+	}
+
+	ordersGroup := r.Group("/orders")
+	{
+		ordersGroup.POST("", o.AddOrder)
+		ordersGroup.GET("", o.GetOrderList)
+	}
+
 	//r.Use(static.ServeRoot("/", "../public/build"))
 	return r.Run(address)
 }
