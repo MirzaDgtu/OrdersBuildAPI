@@ -1,0 +1,35 @@
+CREATE TABLE `orders` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `orderuid` int unsigned NOT NULL,
+  `UnicumNum` int DEFAULT NULL,
+  `FolioNum` int DEFAULT NULL,
+  `OrderDate` timestamp NULL DEFAULT NULL,
+  `FolioDate` timestamp NULL DEFAULT NULL,
+  `OrderSum` decimal(15,2) DEFAULT '0.00',
+  `FolioSum` decimal(15,2) DEFAULT '0.00',
+  `Driver` varchar(150) DEFAULT NULL,
+  `Agent` varchar(150) DEFAULT NULL,
+  `Brieforg` varchar(8) DEFAULT NULL,
+  `ClientId` int DEFAULT NULL,
+  `ClientName` varchar(120) DEFAULT NULL,
+  `ClientAddress` varchar(150) DEFAULT NULL,
+  `VidDoc` varchar(50) DEFAULT NULL,
+  `UserId` int DEFAULT NULL,
+  `start_at` timestamp NULL DEFAULT NULL,
+  `finish_at` timestamp NULL DEFAULT NULL,
+  `Done` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Таблица с шапками товаров';
+
+
+CREATE TABLE `ordersdetails` (
+  `orderUID` int NOT NULL,
+  `articul` varchar(10) NOT NULL,
+  `nameArticul` varchar(100) DEFAULT NULL,
+  `qty` decimal(15,2) DEFAULT NULL,
+  `qtySbor` decimal(15,2) DEFAULT NULL,
+  `cena` decimal(15,2) DEFAULT NULL,
+  `discount` decimal(15,2) DEFAULT NULL,
+  `sumArtucul` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`orderUID`,`articul`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Состав заказа';

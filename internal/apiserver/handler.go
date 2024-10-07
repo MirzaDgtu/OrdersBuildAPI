@@ -20,7 +20,7 @@ type Handler struct {
 }
 
 func NewHandler() (HandlerInterface, error) {
-	db, err := dblayer.NewORM("pmp:pmp1226@(172.16.1.25:3306)/ordersbuild")
+	db, err := dblayer.NewORM("pmp:pmp1226@(172.16.1.25:3306)/ordersbuild?parseTime=true")
 
 	if err != nil {
 		return nil, err
